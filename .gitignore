@@ -1,0 +1,8 @@
+# Dreamweaver crap.
+*_notes/
+# mac finder crap
+*.DS_Store
+# ignor local config/db settings
+application/config/config.php
+application/config/database.php
+

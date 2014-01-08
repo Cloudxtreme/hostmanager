@@ -1,0 +1,2 @@
+<!--<h2>Kontakt</h2>Genossenschaft Kalkbreite<br/>Kalkbreitestrasse 2<br/>8003 Zürich<br/>Telefon: +41 43 317 17 22<br /><a href="mailto:genossenschaft@kalkbreite.net">genossenschaft@kalkbreite.net</a><br/><a href="http://www.kalkbreite.net" target="_blank">www.kalkbreite.net</a><br/>-->
+<h2>Kontakt</h2>Baugenossenschaft<br>mehr als wohnen<br>Hagenholzstrasse 106<br>8050 Zürich <br><br>Telefon: +41 (0)44 325 40 40<br><a href="mailto:info@mehralswohnen.ch">info@mehralswohnen.ch</a><br><a href="www.mehralswohnen.ch" target="_blank">www.mehralswohnen.ch</a>
