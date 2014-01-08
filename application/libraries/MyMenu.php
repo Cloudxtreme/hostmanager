@@ -15,7 +15,7 @@ class MyMenu{
             4=Admin)')
         */
         $navigation_array    = array();
-        $navigation_array[] = array('home','Dashboard',0);
+        $navigation_array[] = array('home','Home',0);
         //$navigation_array[] = array('contact','Kontakt',0);
         $navigation_array[] = array('user','Benutzerverwaltung',4);
 

@@ -1,5 +1,5 @@
 <div class="page-header">
-<h1>Hostmanager</h1>
+<h1>Home</h1>
 </div>
 <p>
 <pre>
