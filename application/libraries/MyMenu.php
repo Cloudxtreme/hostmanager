@@ -1,10 +1,5 @@
 <?php
 
-/*
- * Developer : pan-x (info@pan-x.com)
- * All code (c)2013 pan-x all rights reserved
- */
-
 class MyMenu{
 
     function show_menu(){
@@ -21,13 +16,8 @@ class MyMenu{
         */
         $navigation_array    = array();
         $navigation_array[] = array('home','Einf&uuml;hrung',0);
-        $navigation_array[] = array('newhousehold','Neue Bewerbung',1);
-        $navigation_array[] = array('household','Haushalt',2);
-		$navigation_array[] = array('personaldata','Personendaten',2);
         //$navigation_array[] = array('contact','Kontakt',0);
-        $navigation_array[] = array('apartment','Wohnungen',3);
         $navigation_array[] = array('user','Benutzer',4);
-        $navigation_array[] = array('client','Mandanten',4);
 
         $obj =& get_instance();
         $obj->load->helper('url');
@@ -44,34 +34,10 @@ class MyMenu{
                ( $value[2] == 3 && $_SESSION['user']['loginLevel'] > 1 )||
                ( $value[2] == 4 && $_SESSION['user']['loginLevel'] > 2 )) {
 
-                    if ($value[2] <= 1 && $_SESSION['user']['loginLevel'] == 0) {
-                        if ( $value[0] == 'newhousehold' ) {
-                            $value[0] = 'household';
-                        }
-                        $menu .= "<li>";
-                        $menu .= anchor($value[0],$value[1],"class='$class'");
-                        $menu .= "</li>"."\n";
-                    } else if (isset($_SESSION['household']['household_id']) && $_SESSION['user']['loginLevel'] == 1) {
-                        if ( $value[0] == 'newhousehold' ) {
-                            $value[0] = 'household';
-                        }
-                        if ( $value[0] != 'personaldata') {
+                   if ( $value[2] >= 3 && $_SESSION['user']['loginLevel'] == 3) {
                             $menu .= "<li>";
                             $menu .= anchor($value[0],$value[1],"class='$class'");
                             $menu .= "</li>"."\n";
-                        }
-                    } else if ( $value[2] <= 2 && $_SESSION['user']['loginLevel'] == 1) {
-                        if ( $value[0] != 'household') {
-                            $menu .= "<li>";
-                            $menu .= anchor($value[0],$value[1],"class='$class'");
-                            $menu .= "</li>"."\n";
-                        }
-                    } else {
-                        if ( $value[2] >= 3 && $_SESSION['user']['loginLevel'] == 3) {
-                            $menu .= "<li>";
-                            $menu .= anchor($value[0],$value[1],"class='$class'");
-                            $menu .= "</li>"."\n";
-                        }
                     }
 
             }
