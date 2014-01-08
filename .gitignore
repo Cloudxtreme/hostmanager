@@ -2,6 +2,8 @@
 *_notes/
 # mac finder crap
 *.DS_Store
+# aptana .project
+*.project
 # ignor local config/db settings
 application/config/config.php
 application/config/database.php
