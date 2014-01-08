@@ -2,14 +2,12 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title><?=$_SESSION ['client']['client_name'].' - '.$homeTitle?></title>
+    <title><?=$homeTitle?></title>
     <link rel="shortcut icon" href="<?=base_url()?>/img/favicon.ico" type="image/x-ico; charset=binary" />
-    <link rel="icon" href="<?=base_url()?>/img/<?=$_SESSION ['client']['client_url']?>_favicon.ico" type="image/x-ico; charset=binary" />
+    <link rel="icon" href="<?=base_url()?>/img/favicon.ico" type="image/x-ico; charset=binary" />
     <link href="<?=base_url()?>css/normalize.css" media="all" rel="stylesheet"/>
     <link href="<?=base_url()?>css/style.css" media="all" rel="stylesheet"/>
-    <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet"/>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 
 	<script type="text/javascript" src="<?=base_url()?>js/functions.js"></script>
     <meta http-equiv='expires' content='-1' />

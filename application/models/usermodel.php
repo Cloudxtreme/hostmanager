@@ -1,10 +1,5 @@
 <?php
 
-/*
- * Developer : pan-x (info@pan-x.com)
- * All code (c)2013 pan-x all rights reserved
- */
- 
 Class userModel extends CI_Model
 {
 
