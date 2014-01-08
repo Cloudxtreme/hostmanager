@@ -1,10 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-/*
- * Developer : pan-x (info@pan-x.com)
- * All code (c)2013 pan-x all rights reserved
- */
-
 class PasswordRequest extends CI_Controller {
     private $email = '';
     private $username = '';
@@ -25,7 +20,7 @@ class PasswordRequest extends CI_Controller {
 		$data = array();
         $data['navigation'] = $menu->show_menu();
         $data['mainContent'] = $this->load->view('passwordrequest/passwordrequest', $data, true);
-        $data['homeTitle'] = $_SESSION ['client']['client_name'].' - Passwort anfordern';
+        $data['homeTitle'] = 'Passwort anfordern';
 		$data['headerTitle']  =  $_SESSION ['client']['client_name'];
 		$data['footer'] = $footer->show_footer();
         $this->load->view('main_template', $data);
@@ -97,7 +92,7 @@ class PasswordRequest extends CI_Controller {
 	  // E-Mail versenden
 		$mailtext  = '';
 		$mailtext  .= '---------------------------------------------------'."\n";
-		$mailtext  .= 'Anforderung Ihrer Anmeldinformationen - '.$_SESSION ['client']['client_name']."\n";
+		$mailtext  .= 'Anforderung Ihrer Anmeldinformationen - '."\n";
 		$mailtext  .= '---------------------------------------------------'."\n";
 		$mailtext  .= 'Adresse: '.base_url()."\n";
 		$mailtext  .= 'Benutzername: '.$this->username."\n";
@@ -105,7 +100,7 @@ class PasswordRequest extends CI_Controller {
 		$mailtext  .= 'Direktlogin: '.$login_url."\n\n";
 
 		//echo nl2br($mailtext);
-		mail ($this->email,'Wohnungsbewerbung - '. $_SESSION ['client']['client_name'],$mailtext,'From: info@mieterdaten.ch');
+		mail ($this->email,'Passwordanforderung',$mailtext,'From: info@localhost.ch');
     }
 
 }
