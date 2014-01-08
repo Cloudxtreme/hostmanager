@@ -1,5 +1,9 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+
+// app title
+$config['app_title'] = 'Hostmanager';
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL

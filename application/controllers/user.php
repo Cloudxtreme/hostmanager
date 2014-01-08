@@ -1,11 +1,6 @@
 <?php
-if ( ! defined('BASEPATH'))
-  exit('no access!');
+if ( ! defined('BASEPATH')) exit('no access!');
 
-/*
- * Developer : pan-x (info@pan-x.com)
- * All code (c)2013 pan-x all rights reserved
- */
 
 if (  $_SESSION['user']['loginLevel'] < 3 )
   exit('no access!');
@@ -95,7 +90,7 @@ class User extends CI_Controller {
         $data['navigation'] = $menu->show_menu();
         $data['mainContent'] = $this->load->view('user/userlist', $data, true);
         $data['homeTitle'] = 'Benutzer';
-		$data['headerTitle'] = 'Mieterdatensoftware';
+		$data['headerTitle']  =  $this->config->item('app_title');
 		$data['footer'] = $footer->show_footer();
         $this->load->view('main_template', $data);
 

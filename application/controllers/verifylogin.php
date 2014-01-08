@@ -1,17 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-/*
- * Developer : pan-x (info@pan-x.com)
- * All code (c)2013 pan-x all rights reserved
- */
-
 class VerifyLogin extends CI_Controller {
 
     function __construct() {
         parent::__construct();
         $this->load->model('userModel','',TRUE);
-        $this->load->model('householdModel','',TRUE);
-        $this->load->model('clientModel','',TRUE);
     }
 
     function index() {
@@ -32,7 +25,8 @@ class VerifyLogin extends CI_Controller {
             $data = array();
             $data['navigation'] = $menu->show_menu();
             $data['mainContent'] = $this->load->view('login', $data, true);
-            $data['homeTitle'] = ' - Login';
+            $data['homeTitle'] = 'Login';
+			$data['headerTitle']  =  $this->config->item('app_title');
             $data['footer'] = $footer->show_footer();
             $this->load->view('main_template', $data);
 
@@ -62,11 +56,6 @@ class VerifyLogin extends CI_Controller {
                 $sess_array = array ( 'id' => $row->id,'username' => $row->username,'loginLevel' => $row->loginLevel);
             }
             $_SESSION['user'] =  $sess_array;
-            $res = $this->householdModel->get_by_user_id($sess_array['id']);
-            if ( $res->num_rows > 0 ){
-                $row = $res->row_array(1);
-                $_SESSION['household']['household_id'] = $row['household_id'];
-            }
             return TRUE;
         } else {
             $this->form_validation->set_message('check_database', 'Falscher Benutzername oder falsches Passwort.');

@@ -21,7 +21,7 @@ class PasswordRequest extends CI_Controller {
         $data['navigation'] = $menu->show_menu();
         $data['mainContent'] = $this->load->view('passwordrequest/passwordrequest', $data, true);
         $data['homeTitle'] = 'Passwort anfordern';
-		$data['headerTitle']  =  $_SESSION ['client']['client_name'];
+		$data['headerTitle']  =  $this->config->item('app_title');
 		$data['footer'] = $footer->show_footer();
         $this->load->view('main_template', $data);
     }
