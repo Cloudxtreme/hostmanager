@@ -2,17 +2,13 @@
 /*----------------------------------------------------------------------------------------------------------------------
     Includes
 ----------------------------------------------------------------------------------------------------------------------*/
+$system_path = 'system';
+define('BASEPATH', str_replace("\\", "/", $system_path));
+
 // Datenbank-Verbindung herstellen
 include_once(dirname(__FILE__).'/../application/config/database.php');
 mysql_connect($db['default']['hostname'],$db['default']['username'],$db['default']['password']);
 mysql_select_db($db['default']['database']);
-
-/*----------------------------------------------------------------------------------------------------------------------
-    Settings
-----------------------------------------------------------------------------------------------------------------------*/
-
-$system_path = 'system';
-define('BASEPATH', str_replace("\\", "/", $system_path));
 
 /*----------------------------------------------------------------------------------------------------------------------
     Functions
@@ -44,6 +40,7 @@ function handle_table ($inputQuery,$tableName,$action='create') {
             echo 'Die Tabelle <i>'.$tableName.'</i> wurde gel&ouml;scht - '.$output01."<br />\n";
         else
             echo 'Die Tabelle <i>'.$tableName.'</i> konnte nicht gel&ouml;scht werden - '.$output02."<br />\n";
+		
         if ( mysql_query ($inputQuery) )
             echo 'Die Tabelle <i>'.$tableName.'</i> wurde neu angelegt - '.$output01."<br />\n";
         else
@@ -82,7 +79,7 @@ $query .= "`user_email` varchar(255) NOT NULL,";
 $query .= "`user_password` varchar(255) NOT NULL,";
 $query .= "`user_loginLevel` smallint(1) NOT NULL,";
 $query .= "`user_status` enum('A','I') NOT NULL DEFAULT 'A' COMMENT 'A - aktiv, I - inaktiv',";
-$query .= "PRIMARY KEY (`user_id`),";
+$query .= "PRIMARY KEY (`user_id`)";
 $query .= ") ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1";
 handle_table($query,'user');
 
@@ -99,6 +96,6 @@ echo '--------------------------------------------------------------------------
 
 
 // Benutzer
-$query  = "INSERT INTO `user` (`client_id`,`user_username`, `user_email`,`user_password`, `user_loginlevel`,`user_status`) VALUES ";
-$query .= "('','info@pan-x.ch','info@pan-x.ch', 'beetester45', 3, 'A'),";
+$query  = "INSERT INTO `user` (`user_username`, `user_email`,`user_password`, `user_loginlevel`,`user_status`) VALUES ";
+$query .= "('info@pan-x.ch','info@pan-x.ch', 'beetester45', 3, 'A')";
 handle_table($query,'user','insert');
