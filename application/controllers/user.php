@@ -10,14 +10,13 @@ class User extends CI_Controller {
     // Anzahl fuer das Paging
     private $limit = 1000;
 	private $typ_select = array(0 => 'Internetuser', 1 => 'Haushalt/Personendaten',2 => 'Redakteur',3 => 'Admin');
-	private $typ_select2 = array(1 => 'Haushalt/Personendaten', 2 => 'Redakteur',3 => 'Admin');
 
     function User(){
 
 		parent::__construct();
 
 		// Security
-		if ( $_SESSION['user']['loginLevel'] < 3 ) {
+		if ( $_SESSION['user']['loginlevel'] < 3 ) {
 		    redirect('home', 'refresh');
 		}
 
@@ -32,7 +31,7 @@ class User extends CI_Controller {
     function index($offset = 0){
 
         // offset
-    		$data = array();
+    	$data = array();
         $uri_segment = 3;
         $offset = $this->uri->segment($uri_segment);
 
@@ -71,13 +70,12 @@ class User extends CI_Controller {
             $user->typ = $this->typ_select[$user->loginLevel];
             $this->table->add_row(
             $user->username,
-            $user->email,
-						$user->typ,
-            anchor('user/update/'.$user->id,'bearbeiten',array()),
-						anchor('autologin/?checkstring='.md5($user->username.$user->password),'login',array()),
-						anchor('user/delete/'.$user->id,'l&ouml;schen',array('onclick'=>"return confirm('M&ouml;chten Sie diesen Benutzer wirklich l&ouml;schen?')")));
+            $user->email,$user->typ,
+            	anchor('user/update/'.$user->id,'bearbeiten',array()),
+				anchor('autologin/?checkstring='.md5($user->username.$user->password),'login',array()),
+				anchor('user/delete/'.$user->id,'l&ouml;schen',array('onclick'=>"return confirm('M&ouml;chten Sie diesen Benutzer wirklich l&ouml;schen?')")));
         }
-		//echo 'http://kalkbreite/index.php/autologin/?checkstring='.md5('sw@regeo.chsolala');
+		//echo 'checkstring='.md5('info@pan');
 
         $data['table'] = $this->table->generate();
 
@@ -89,7 +87,7 @@ class User extends CI_Controller {
 
         $data['navigation'] = $menu->show_menu();
         $data['mainContent'] = $this->load->view('user/userlist', $data, true);
-        $data['homeTitle'] = 'Benutzer';
+        $data['homeTitle'] = $this->config->item('app_title').' - Benutzer';
 		$data['headerTitle']  =  $this->config->item('app_title');
 		$data['footer'] = $footer->show_footer();
         $this->load->view('main_template', $data);
@@ -111,8 +109,8 @@ class User extends CI_Controller {
 			$data['password2'] = '';
 			$data['typ'] = form_dropdown('loginLevel', $this->typ_select2, '1',' class="selectField"');
 			$data['title'] = 'Benutzer anlegen';
-			$data['homeTitle'] = 'Benutzer anlegen';
-            $data['headerTitle'] = 'Mieterdatensoftware';
+			$data['homeTitle'] = $this->config->item('app_title').' - Benutzer anlegen';
+            $data['headerTitle'] = $this->config->item('app_title');
 			$data['action'] = site_url('user/add_user');
 			$data['link_back'] = anchor('user/index/','zur&uuml;ck zur &Uuml;bersicht',array('class'=>'back'));
 			$data['navigation'] = $menu->show_menu();
@@ -156,8 +154,8 @@ class User extends CI_Controller {
 		$data['password2'] = $this->input->post('password2');
         $data['typ'] = form_dropdown('loginLevel', $this->typ_select, $this->input->post('loginLevel'),' class="selectField"');
         $data['title'] = 'Benutzerdaten anpassen';
-        $data['homeTitle'] = 'Benutzerdaten anpassen';
-        $data['headerTitle'] = 'Mieterdatensoftware';
+        $data['homeTitle'] = $this->config->item('app_title').' - Benutzerdaten anpassen';
+        $data['headerTitle'] = $this->config->item('app_title');
         $data['action'] = site_url('user/update_user');
         $data['link_back'] = anchor('user/index/','zur&uuml;ck zur &Uuml;bersicht',array('class'=>'back'));
         $data['navigation'] = $menu->show_menu();
@@ -187,8 +185,8 @@ class User extends CI_Controller {
 		$data['password2'] = $user->password;
         $data['typ'] = form_dropdown('loginLevel', $this->typ_select2, $user->loginLevel,' class="selectField"');
         $data['title'] = 'Benutzerdaten anpassen';
-        $data['homeTitle'] = 'Benutzerdaten anpassen';
-        $data['headerTitle'] = 'Mieterdatensoftware';
+        $data['homeTitle'] = $this->config->item('app_title').' - Benutzerdaten anpassen';
+        $data['headerTitle'] = $this->config->item('app_title');
         $data['action'] = site_url('user/update_user');
         $data['link_back'] = anchor('user/index/','zur&uuml;ck zur &Uuml;bersicht',array('class'=>'back'));
         $data['navigation'] = $menu->show_menu();
@@ -210,9 +208,9 @@ class User extends CI_Controller {
         } else {
             // save data
             $id = $this->input->post('id');
-            $user = array('username' => $this->input->post('username'),
-                          'password' => $this->input->post('password'),
-													'loginLevel' => $this->input->post('loginLevel'));
+            $user = array('user_username' => $this->input->post('username'),
+                          'user_password' => $this->input->post('password'),
+						  'user_loginlevel' => $this->input->post('loginLevel'));
             $this->userModel->update($id,$user);
             redirect('user', 'refresh');
         }
@@ -231,8 +229,8 @@ class User extends CI_Controller {
 		$data['password2'] = $this->input->post('password2');
         $data['typ'] = form_dropdown('loginLevel', $this->typ_select, $this->input->post('loginLevel'),' class="selectField"');
         $data['title'] = 'Benutzerdaten anpassen';
-        $data['homeTitle'] = 'Benutzerdaten anpassen';
-        $data['headerTitle'] = 'Mieterdatensoftware';
+        $data['homeTitle'] = $this->config->item('app_title').' - Benutzerdaten anpassen';
+        $data['headerTitle'] = $this->config->item('app_title');
         $data['action'] = site_url('user/update_user');
         $data['link_back'] = anchor('user/index/','zur&uuml;ck zur &Uuml;bersicht',array('class'=>'back'));
         $data['navigation'] = $menu->show_menu();

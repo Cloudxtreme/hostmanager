@@ -3,32 +3,32 @@
 Class userModel extends CI_Model
 {
 
-    private $tbl_name= 'users';
+    private $tbl_name= 'user';
 
     function userModel(){
         parent::__construct();
     }
 
     function login($username, $password) {
-        $this -> db -> select('id, username, password, loginLevel');
-        $this -> db -> from('users');
-        $this -> db -> where('username = ' . "'" . $username . "'");
-        $this -> db -> where('password = ' . "'" . $password . "'");
-        $this -> db -> limit(1);
-        $query = $this -> db -> get();
-        if($query -> num_rows() == 1)
+        $this->db->select('user_id, user_username, user_password, user_loginlevel');
+        $this->db->from($this->tbl_name);
+        $this->db->where('user_username = ' . "'" . $username . "'");
+        $this->db->where('user_password = ' . "'" . $password . "'");
+        $this->db->limit(1);
+        $query = $this->db->get();
+        if($query->num_rows() == 1)
             return $query->result();
         else
             return false;
     }
 
     function autologin($checkstring) {
-        $this -> db -> select('id, username, password, loginLevel');
-        $this -> db -> from('users');
-        $this -> db -> where('MD5(CONCAT(username,password)) = ' . "'" . $checkstring . "'");
-        $this -> db -> limit(1);
-        $query = $this -> db -> get();
-        if($query -> num_rows() == 1)
+        $this->db->select('user_id, user_username, user_password, user_loginlevel');
+        $this->db->from($this->tbl_name);
+        $this->db->where('MD5(CONCAT(user_username,user_password)) = ' . "'" . $checkstring . "'");
+        $this->db->limit(1);
+        $query = $this->db->get();
+        if($query->num_rows() == 1)
             return $query->result();
         else
             return false;
@@ -39,28 +39,28 @@ Class userModel extends CI_Model
     }
 
     function get_paged_list($limit = 10, $offset = 0){
-        $this->db->order_by('id','asc');
+        $this->db->order_by('user_id','asc');
         return $this->db->get($this->tbl_name, $limit, $offset);
     }
 
     function get_by_id($id){
-        $this->db->where('id', $id);
+        $this->db->where('user_id', $id);
         return $this->db->get($this->tbl_name);
     }
 
     function get_by_username($username){
-        $this->db->where('username', $username);
+        $this->db->where('user_username', $username);
         return $this->db->get($this->tbl_name);
     }
 
     function get_by_email($email){
-        $this->db->where('email', $email);
+        $this->db->where('user_email', $email);
         return $this->db->get($this->tbl_name);
     }
 
     function get_by_email_username($email,$username){
-        $this->db->where('username',$username);
-        $this->db->where('email',$email);
+        $this->db->where('user_username',$username);
+        $this->db->where('user_email',$email);
         return $this -> db -> get($this->tbl_name);
     }
 
@@ -70,12 +70,12 @@ Class userModel extends CI_Model
     }
 
     function update($id, $user){
-        $this->db->where('id', $id);
+        $this->db->where('user_id', $id);
         $this->db->update($this->tbl_name, $user);
     }
 
     function delete($id){
-        $this->db->where('id', $id);
+        $this->db->where('user_id', $id);
         $this->db->delete($this->tbl_name);
     }
 
