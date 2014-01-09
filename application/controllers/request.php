@@ -30,7 +30,7 @@ class Request extends CI_Controller {
 	public function index($error_msg = '') {
 		$this->errordata = $error_msg;
 
-		if ( $_SESSION['user']['loginLevel'] > 0 ) {
+		if ( $_SESSION['user']['loginlevel'] > 0 ) {
 		    $this->household_id = $_SESSION['household']['household_id'];
 		    $result_household = $this->householdModel->get_by_id($this->household_id);
             if ( $result_household->num_rows > 0 ) {
@@ -65,15 +65,15 @@ class Request extends CI_Controller {
         $data['buildingTitle'] = $this->building_array;
 
 
-		$this->load->library('MyMenu');
-        $menu = new MyMenu;
-		$this->load->library('MyFooter');
-		$footer = new MyFooter;
+		$this->load->library('appMenu');
+        $menu = new appMenu;
+		$this->load->library('appFooter');
+		$footer = new appFooter;
 
 		$data['error_messages'] = $this->errordata;
         $data['navigation']  = $menu->show_menu();
 
-        if($_SESSION['user']['loginLevel'] == 1) {
+        if($_SESSION['user']['loginlevel'] == 1) {
             $data['subnavigation']  = '<ul class="navSub"><li><a href="'.base_url().'index.php/household">Haushaltstruktur</a></li><li><a href="'.base_url().'index.php/householdsurvey">Weitere Angaben zum Haushalt</a></li><li class="selected"><a href="'.base_url().'index.php/request">Wohnungsauswahl</a></li>';
         }
 
@@ -96,7 +96,7 @@ class Request extends CI_Controller {
 		}
 
 		// User und AnfrageID abchecken
-		if ( $_SESSION['user']['loginLevel'] > 0 && $this->household_id ) {
+		if ( $_SESSION['user']['loginlevel'] > 0 && $this->household_id ) {
             if ( !$this->householdModel->check_hack($_SESSION['user']['id'],$this->household_id) ) {
                 //unset($_SESSION);
 				//redirect('login/','refresh');
@@ -131,15 +131,15 @@ class Request extends CI_Controller {
 
 	public function saved_success() {
 
-  		$this->load->library('MyMenu');
-        $menu = new MyMenu;
-  		$this->load->library('MyFooter');
-  		$footer = new MyFooter;
+  		$this->load->library('appMenu');
+        $menu = new appMenu;
+  		$this->load->library('appFooter');
+  		$footer = new appFooter;
 
 		$data = array();
         $data['navigation']  = $menu->show_menu();
 
-        if($_SESSION['user']['loginLevel'] == 1) {
+        if($_SESSION['user']['loginlevel'] == 1) {
             $data['subnavigation']  = '<ul class="navSub"><li><a href="'.base_url().'index.php/household">Haushaltstruktur</a></li><li><a href="'.base_url().'index.php/householdsurvey">Weitere Angaben zum Haushalt</a></li><li class="selected"><a href="'.base_url().'index.php/request">Wohnungsauswahl</a></li>';
         }
 

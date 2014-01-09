@@ -40,7 +40,7 @@ function handle_table ($inputQuery,$tableName,$action='create') {
             echo 'Die Tabelle <i>'.$tableName.'</i> wurde gel&ouml;scht - '.$output01."<br />\n";
         else
             echo 'Die Tabelle <i>'.$tableName.'</i> konnte nicht gel&ouml;scht werden - '.$output02."<br />\n";
-		
+
         if ( mysql_query ($inputQuery) )
             echo 'Die Tabelle <i>'.$tableName.'</i> wurde neu angelegt - '.$output01."<br />\n";
         else
@@ -73,6 +73,19 @@ echo '--------------------------------------------------------------------------
 // Table user loeschen und einfuegen
 
 $query  = "CREATE TABLE IF NOT EXISTS `user` (";
+$query .= "`user_id` int(11) NOT NULL AUTO_INCREMENT,";
+$query .= "`user_username` varchar(255) NOT NULL,";
+$query .= "`user_email` varchar(255) NOT NULL,";
+$query .= "`user_password` varchar(255) NOT NULL,";
+$query .= "`user_loginlevel` smallint(1) NOT NULL,";
+$query .= "`user_status` enum('A','I') NOT NULL DEFAULT 'A' COMMENT 'A - aktiv, I - inaktiv',";
+$query .= "PRIMARY KEY (`user_id`)";
+$query .= ") ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1";
+handle_table($query,'user');
+
+
+
+$query  = "CREATE TABLE IF NOT EXISTS `adress` (";
 $query .= "`user_id` int(11) NOT NULL AUTO_INCREMENT,";
 $query .= "`user_username` varchar(255) NOT NULL,";
 $query .= "`user_email` varchar(255) NOT NULL,";

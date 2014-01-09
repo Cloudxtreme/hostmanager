@@ -10,17 +10,17 @@ class PasswordRequest extends CI_Controller {
     }
 
     function index() {
-        $this->load->library('MyMenu');
-        $menu = new MyMenu;
-		$this->load->library('MyFooter');
-		$footer = new MyFooter;
+        $this->load->library('appMenu');
+        $menu = new appMenu;
+		$this->load->library('appFooter');
+		$footer = new appFooter;
 
-        $this->load->helper(array('form', 'url'));
+        $this->load->helper('form');
 
 		$data = array();
         $data['navigation'] = $menu->show_menu();
         $data['mainContent'] = $this->load->view('passwordrequest/passwordrequest', $data, true);
-        $data['homeTitle'] = 'Passwort anfordern';
+        $data['homeTitle'] = $this->config->item('app_title').' - Passwort anfordern';
 		$data['headerTitle']  =  $this->config->item('app_title');
 		$data['footer'] = $footer->show_footer();
         $this->load->view('main_template', $data);
@@ -37,10 +37,10 @@ class PasswordRequest extends CI_Controller {
 	    }
 
         if( $error_msg != '' ) {
-            $this->load->library('MyMenu');
-            $menu = new MyMenu;
-            $this->load->library('MyFooter');
-            $footer = new MyFooter;
+            $this->load->library('appMenu');
+            $menu = new appMenu;
+            $this->load->library('appFooter');
+            $footer = new appFooter;
 
             $this->load->helper(array('form', 'url'));
 
@@ -48,8 +48,8 @@ class PasswordRequest extends CI_Controller {
             $data['error_msg'] = $error_msg;
             $data['navigation'] = $menu->show_menu();
             $data['mainContent'] = $this->load->view('passwordrequest/passwordrequest', $data, true);
-            $data['homeTitle'] = ' - Passwort anfordern';
-            $data['headerTitle']  =  $_SESSION ['client']['client_name'];
+            $data['homeTitle'] = $this->config->item('app_title').' - Passwort anfordern';
+            $data['headerTitle']  =  $this->config->item('app_title');
             $data['footer'] = $footer->show_footer();
             $this->load->view('main_template', $data);
         } else {
@@ -67,16 +67,16 @@ class PasswordRequest extends CI_Controller {
         unset($_SESSION['passwordrequest']);
         $this->send_password();
 
-        $this->load->library('MyMenu');
-        $menu = new MyMenu;
-        $this->load->library('MyFooter');
-    	$footer = new MyFooter;
+        $this->load->library('appMenu');
+        $menu = new appMenu;
+        $this->load->library('appFooter');
+    	$footer = new appFooter;
 
     	$data = array();
         $data['navigation'] = $menu->show_menu();
         $data['mainContent'] = $this->load->view('passwordrequest/sendsuccess', $data, true);
-        $data['homeTitle'] = ' - Passwort anfordern';
-    	$data['headerTitle']  =  $_SESSION ['client']['client_name'];
+        $data['homeTitle'] = $this->config->item('app_title').' - Passwort anfordern';
+    	$data['headerTitle']  =  $this->config->item('app_title');
     	$data['footer'] = $footer->show_footer();
         $this->load->view('main_template', $data);
     }

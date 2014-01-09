@@ -2,7 +2,7 @@
 if ( ! defined('BASEPATH')) exit('no access!');
 
 
-if (  $_SESSION['user']['loginLevel'] < 3 )
+if (  $_SESSION['user']['loginlevel'] < 3 )
   exit('no access!');
 
 class User extends CI_Controller {
@@ -67,7 +67,7 @@ class User extends CI_Controller {
         $i = 0 + $offset;
 
         foreach ($users as $user){
-            $user->typ = $this->typ_select[$user->loginLevel];
+            $user->typ = $this->typ_select[$user->loginlevel];
             $this->table->add_row(
             $user->username,
             $user->email,$user->typ,
@@ -80,10 +80,10 @@ class User extends CI_Controller {
         $data['table'] = $this->table->generate();
 
         // load view
-        $this->load->library('MyMenu');
-        $menu = new MyMenu;
-		$this->load->library('MyFooter');
-		$footer = new MyFooter;
+        $this->load->library('appMenu');
+        $menu = new appMenu;
+		$this->load->library('appFooter');
+		$footer = new appFooter;
 
         $data['navigation'] = $menu->show_menu();
         $data['mainContent'] = $this->load->view('user/userlist', $data, true);
@@ -97,17 +97,17 @@ class User extends CI_Controller {
     function add(){
 
 			// Load Libraries
-			$this->load->library('MyMenu');
-			  $menu = new MyMenu;
-			$this->load->library('MyFooter');
-			$footer = new MyFooter;
+			$this->load->library('appMenu');
+			  $menu = new appMenu;
+			$this->load->library('appFooter');
+			$footer = new appFooter;
 
 			  // set common properties
 			$data['id'] = '';
 			$data['username']= '';
 			$data['password'] = '';
 			$data['password2'] = '';
-			$data['typ'] = form_dropdown('loginLevel', $this->typ_select2, '1',' class="selectField"');
+			$data['typ'] = form_dropdown('loginlevel', $this->typ_select2, '1',' class="selectField"');
 			$data['title'] = 'Benutzer anlegen';
 			$data['homeTitle'] = $this->config->item('app_title').' - Benutzer anlegen';
             $data['headerTitle'] = $this->config->item('app_title');
@@ -134,7 +134,7 @@ class User extends CI_Controller {
             // save data
             $user = array(  'username' => $this->input->post('username'),
                             'password' => $this->input->post('password'),
-			                'loginLevel' => $this->input->post('loginLevel'));
+			                'loginlevel' => $this->input->post('loginlevel'));
             $id = $this->userModel->save($user);
             // set form input name="id"
             $this->form_validation->id = $id;
@@ -142,17 +142,17 @@ class User extends CI_Controller {
         }
 
 				// Load Libraries
-        $this->load->library('MyMenu');
-        $menu = new MyMenu;
-		$this->load->library('MyFooter');
-		$footer = new MyFooter;
+        $this->load->library('appMenu');
+        $menu = new appMenu;
+		$this->load->library('appFooter');
+		$footer = new appFooter;
 
         // set common properties
         $data['id'] = $this->input->post('id');
         $data['username']= $this->input->post('username');
 		$data['password'] = $this->input->post('password');
 		$data['password2'] = $this->input->post('password2');
-        $data['typ'] = form_dropdown('loginLevel', $this->typ_select, $this->input->post('loginLevel'),' class="selectField"');
+        $data['typ'] = form_dropdown('loginlevel', $this->typ_select, $this->input->post('loginlevel'),' class="selectField"');
         $data['title'] = 'Benutzerdaten anpassen';
         $data['homeTitle'] = $this->config->item('app_title').' - Benutzerdaten anpassen';
         $data['headerTitle'] = $this->config->item('app_title');
@@ -173,17 +173,17 @@ class User extends CI_Controller {
         $user = $this->userModel->get_by_id($id)->row();
 
 		// Load Libraries
-        $this->load->library('MyMenu');
-        $menu = new MyMenu;
-        $this->load->library('MyFooter');
- 		$footer = new MyFooter;
+        $this->load->library('appMenu');
+        $menu = new appMenu;
+        $this->load->library('appFooter');
+ 		$footer = new appFooter;
 
         // set common properties
         $data['id'] = $id;
         $data['username']= $user->username;
 		$data['password'] = $user->password;
 		$data['password2'] = $user->password;
-        $data['typ'] = form_dropdown('loginLevel', $this->typ_select2, $user->loginLevel,' class="selectField"');
+        $data['typ'] = form_dropdown('loginlevel', $this->typ_select2, $user->loginlevel,' class="selectField"');
         $data['title'] = 'Benutzerdaten anpassen';
         $data['homeTitle'] = $this->config->item('app_title').' - Benutzerdaten anpassen';
         $data['headerTitle'] = $this->config->item('app_title');
@@ -210,16 +210,16 @@ class User extends CI_Controller {
             $id = $this->input->post('id');
             $user = array('user_username' => $this->input->post('username'),
                           'user_password' => $this->input->post('password'),
-						  'user_loginlevel' => $this->input->post('loginLevel'));
+						  'user_loginlevel' => $this->input->post('loginlevel'));
             $this->userModel->update($id,$user);
             redirect('user', 'refresh');
         }
 
 		// Load Libraries
-        $this->load->library('MyMenu');
-        $menu = new MyMenu;
-        $this->load->library('MyFooter');
-        $footer = new MyFooter;
+        $this->load->library('appMenu');
+        $menu = new appMenu;
+        $this->load->library('appFooter');
+        $footer = new appFooter;
 
 
         // set common properties
@@ -227,7 +227,7 @@ class User extends CI_Controller {
         $data['username']= $this->input->post('username');
 		$data['password'] = $this->input->post('password');
 		$data['password2'] = $this->input->post('password2');
-        $data['typ'] = form_dropdown('loginLevel', $this->typ_select, $this->input->post('loginLevel'),' class="selectField"');
+        $data['typ'] = form_dropdown('loginlevel', $this->typ_select, $this->input->post('loginlevel'),' class="selectField"');
         $data['title'] = 'Benutzerdaten anpassen';
         $data['homeTitle'] = $this->config->item('app_title').' - Benutzerdaten anpassen';
         $data['headerTitle'] = $this->config->item('app_title');

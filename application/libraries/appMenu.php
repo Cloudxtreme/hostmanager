@@ -1,11 +1,11 @@
 <?php
 
-class MyMenu{
+class appMenu{
 
     function show_menu(){
 
-        if ( !isset($_SESSION['user']['loginLevel']) )
-            $_SESSION['user']['loginLevel'] = 0;
+        if ( !isset($_SESSION['user']['loginlevel']) )
+            $_SESSION['user']['loginlevel'] = 0;
 
         /* $navigation_array ('ID','Name,'Geschuetzt (
             0=beides,
@@ -29,12 +29,12 @@ class MyMenu{
         foreach ( $navigation_array as $key => $value ) {
             $class = ( $controller == strtolower($value[1]) ? 'active' : '' );
             if ( $value[2] == 0 ||
-               ( $value[2] == 1 && $_SESSION['user']['loginLevel'] < 1 ) ||
-               ( $value[2] == 2 && $_SESSION['user']['loginLevel'] > 0 ) ||
-               ( $value[2] == 3 && $_SESSION['user']['loginLevel'] > 1 )||
-               ( $value[2] == 4 && $_SESSION['user']['loginLevel'] > 2 )) {
+               ( $value[2] == 1 && $_SESSION['user']['loginlevel'] < 1 ) ||
+               ( $value[2] == 2 && $_SESSION['user']['loginlevel'] > 0 ) ||
+               ( $value[2] == 3 && $_SESSION['user']['loginlevel'] > 1 )||
+               ( $value[2] == 4 && $_SESSION['user']['loginlevel'] > 2 )) {
 
-                   if ( $value[2] >= 3 && $_SESSION['user']['loginLevel'] == 3) {
+                   if ( $value[2] >= 3 && $_SESSION['user']['loginlevel'] == 3) {
                             $menu .= "<li>";
                             $menu .= anchor($value[0],$value[1],"class='$class'");
                             $menu .= "</li>"."\n";
@@ -47,7 +47,7 @@ class MyMenu{
 
         // login
         $menu .= "\n        <ul class='nav navbar-nav navbar-right'>\n";
-        if ( $_SESSION['user']['loginLevel'] < 1 ) {
+        if ( $_SESSION['user']['loginlevel'] < 1 ) {
             $class = ( $controller == strtolower('login') ? 'active' : '' );
             $menu .= "          <li>";
             $menu .= anchor('login','Login',"class='$class'");

@@ -1,0 +1,1 @@
+<?phpclass appFooter{    function show_footer(){	    $html = '<div class="container">        <p class="text-muted">impresum</p>      </div>';        return $html;    }}?>

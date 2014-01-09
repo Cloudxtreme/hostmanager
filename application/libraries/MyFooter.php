@@ -1,1 +1,0 @@
-<?phpclass MyFooter{    function show_footer(){	    $html = 'footer here';        return $html;    }}?>

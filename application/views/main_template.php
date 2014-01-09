@@ -48,7 +48,7 @@
       </div>
 
 
-      <div id="container">
+      <div class="container">
         <?=$mainContent?>
       </div>
     </div><!--/.wrap -->
