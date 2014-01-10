@@ -33,7 +33,7 @@ class PasswordRequest extends CI_Controller {
         $this->username = $this->input->post('username');
         $result = $this->userModel->get_by_email_username($this->email,$this->username);
         if ( $result->num_rows < 1 ) {
-		     $error_msg .= '<div>Diese Emailadresse mit diesem Username ist unbekannt.</div>';
+		     $error_msg .= '<div class="alert alert-danger">Diese Emailadresse mit diesem Benutzername ist nicht bekannt.</div>';
 	    }
 
         if( $error_msg != '' ) {

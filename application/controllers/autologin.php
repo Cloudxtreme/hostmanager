@@ -20,7 +20,7 @@ class Autologin extends CI_Controller {
 
         if($result_user) {
             foreach($result_user as $row_user) {
-                $_SESSION['user'] =  array('loginlevel' => $row_user->user_loginlevel,'id' => $row_user->user_id, 'username' => $row_user->user_username);
+                $_SESSION['user'] =  array('loginlevel' => $row_user->loginlevel,'id' => $row_user->user_id, 'username' => $row_user->username);
             }
 			redirect('home', 'refresh');
         } else

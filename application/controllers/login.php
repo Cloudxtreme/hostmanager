@@ -27,7 +27,7 @@ class Login extends CI_Controller {
             $data['navigation'] = $menu->show_menu();
             $data['mainContent'] = $this->load->view('login', $data, true);
             $data['homeTitle'] = $this->config->item('app_title').' - Login';
-            $data['headerTitle']  =  $this->config->item('app_title');
+            $data['headerTitle']  =  '<span class="glyphicon glyphicon-search"></span> '.$this->config->item('app_title');
             $data['footer'] = $footer->show_footer();
             $this->load->view('main_template', $data);
 
@@ -54,12 +54,12 @@ class Login extends CI_Controller {
         if($result) {
             $sess_array = array();
             foreach($result as $row) {
-                $sess_array = array ( 'id' => $row->user_id,'username' => $row->user_username,'loginlevel' => $row->user_loginlevel);
+                $sess_array = array ( 'id' => $row->user_id,'username' => $row->username,'loginlevel' => $row->loginlevel);
             }
             $_SESSION['user'] =  $sess_array;
             return TRUE;
         } else {
-            $this->form_validation->set_message('check_database', 'Falscher Benutzername oder falsches Passwort.');
+            $this->form_validation->set_message('check_database', '<div class="alert alert-danger">Falscher Benutzername oder falsches Passwort.</div>');
             return FALSE;
         }
     }

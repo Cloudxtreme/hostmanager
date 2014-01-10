@@ -2,14 +2,13 @@
 if ( ! defined('BASEPATH')) exit('no access!');
 
 
-if (  $_SESSION['user']['loginlevel'] < 3 )
-  exit('no access!');
+if (  $_SESSION['user']['loginlevel'] < 1 ) exit('no access!');
 
 class User extends CI_Controller {
 
     // Anzahl fuer das Paging
     private $limit = 1000;
-	private $typ_select = array(0 => 'Internetuser', 1 => 'Haushalt/Personendaten',2 => 'Redakteur',3 => 'Admin');
+	  private $typ_select = array(0 => 'Internetuser', 1 => 'Redakteur', 2 => 'Admin');
 
     function User(){
 
@@ -208,9 +207,9 @@ class User extends CI_Controller {
         } else {
             // save data
             $id = $this->input->post('id');
-            $user = array('user_username' => $this->input->post('username'),
-                          'user_password' => $this->input->post('password'),
-						  'user_loginlevel' => $this->input->post('loginlevel'));
+            $user = array('username' => $this->input->post('username'),
+                          'password' => $this->input->post('password'),
+						  'loginlevel' => $this->input->post('loginlevel'));
             $this->userModel->update($id,$user);
             redirect('user', 'refresh');
         }

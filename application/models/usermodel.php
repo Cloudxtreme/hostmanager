@@ -10,10 +10,10 @@ Class userModel extends CI_Model
     }
 
     function login($username, $password) {
-        $this->db->select('user_id, user_username, user_password, user_loginlevel');
+        $this->db->select('user_id, username, password, loginlevel');
         $this->db->from($this->tbl_name);
-        $this->db->where('user_username = ' . "'" . $username . "'");
-        $this->db->where('user_password = ' . "'" . $password . "'");
+        $this->db->where('username = ' . "'" . $username . "'");
+        $this->db->where('password = ' . "'" . $password . "'");
         $this->db->limit(1);
         $query = $this->db->get();
         if($query->num_rows() == 1)
@@ -23,9 +23,9 @@ Class userModel extends CI_Model
     }
 
     function autologin($checkstring) {
-        $this->db->select('user_id, user_username, user_password, user_loginlevel');
+        $this->db->select('user_id, username, password, loginlevel');
         $this->db->from($this->tbl_name);
-        $this->db->where('MD5(CONCAT(user_username,user_password)) = ' . "'" . $checkstring . "'");
+        $this->db->where('MD5(CONCAT(username,password)) = ' . "'" . $checkstring . "'");
         $this->db->limit(1);
         $query = $this->db->get();
         if($query->num_rows() == 1)
@@ -49,18 +49,18 @@ Class userModel extends CI_Model
     }
 
     function get_by_username($username){
-        $this->db->where('user_username', $username);
+        $this->db->where('username', $username);
         return $this->db->get($this->tbl_name);
     }
 
     function get_by_email($email){
-        $this->db->where('user_email', $email);
+        $this->db->where('email', $email);
         return $this->db->get($this->tbl_name);
     }
 
     function get_by_email_username($email,$username){
-        $this->db->where('user_username',$username);
-        $this->db->where('user_email',$email);
+        $this->db->where('username',$username);
+        $this->db->where('email',$email);
         return $this -> db -> get($this->tbl_name);
     }
 

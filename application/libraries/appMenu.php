@@ -7,12 +7,8 @@ class appMenu{
         if ( !isset($_SESSION['user']['loginlevel']) )
             $_SESSION['user']['loginlevel'] = 0;
 
-        /* $navigation_array ('ID','Name,'Geschuetzt (
-            0=beides,
-            1=,
-            2=,
-            3=redakteur,
-            4=Admin)')
+        /* 
+				$typ_select = array(0 => 'Internetuser', 1 => 'Redakteur', 2 => 'Admin');
         */
         $navigation_array    = array();
         $navigation_array[] = array('home','Home',0);
