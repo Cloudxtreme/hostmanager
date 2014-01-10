@@ -123,6 +123,7 @@ $query .= "`country_id` int(11) NOT NULL AUTO_INCREMENT,";
 $query .= "`name` varchar(200) DEFAULT NULL,";
 $query .= "`code` varchar(10) DEFAULT NULL,";
 $query .= "`tld` varchar(10) DEFAULT NULL,";
+$query .= "`enabled` tinyint(4) NOT NULL DEFAULT '1',";
 $query .= "PRIMARY KEY (`country_id`)";
 $query .= ") ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1";
 handle_table($query,'country');
@@ -140,7 +141,7 @@ echo '--------------------------------------------------------------------------
 
 // Benutzer
 $query  = "INSERT INTO `user` (`username`, `email`,`password`, `loginlevel`,`created`,`changed`,`enabled`) VALUES ";
-$query .= "('info@pan-x.ch','info@pan-x.ch', 'beetester45', 3, CURRENT_TIMESTAMP, NULL,1)";
+$query .= "('info@pan-x.ch','info@pan-x.ch', 'beetester45', 3, CURRENT_TIMESTAMP, NULL, 1)";
 handle_table($query,'user','insert');
 
 
