@@ -15,7 +15,7 @@ class PasswordRequest extends CI_Controller {
 		$this->load->library('appFooter');
 		$footer = new appFooter;
 
-        $this->load->helper('form');
+        $this->load->helper(array('form', 'url'));
 
 		$data = array();
         $data['navigation'] = $menu->show_menu();

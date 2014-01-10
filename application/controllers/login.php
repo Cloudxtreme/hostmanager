@@ -10,8 +10,8 @@ class Login extends CI_Controller {
         $this->load->helper(array('form', 'url'));
 
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|callback_check_database');
+        $this->form_validation->set_rules('username', 'Benutzername', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('password', 'Passwort', 'trim|required|xss_clean|callback_check_database');
 
 
         if($this->form_validation->run() == FALSE) {
