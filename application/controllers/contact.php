@@ -9,14 +9,14 @@ class Contact extends CI_Controller {
 	{
     $this->load->library('appMenu');
     $menu = new appMenu;
-		$this->load->library('appFooter');
-		$footer = new appFooter;
+	$this->load->library('appFooter');
+	$footer = new appFooter;
 
-		$data = array();
+	$data = array();
     $data['navigation'] = $menu->show_menu();
     $data['mainContent'] = $this->load->view('contact', $data, true);
-    $data['homeTitle'] = 'Kontakt';
-	$data['headerTitle']  =  '';
+    $data['homeTitle'] = $this->config->item('app_title').' - Kontakt';
+	$data['headerTitle']  =  $this->config->item('app_title');
 	$data['footer'] = $footer->show_footer();
     $this->load->view('main_template', $data);
 	}

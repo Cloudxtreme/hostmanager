@@ -12,8 +12,8 @@ Class userModel extends CI_Model
     function login($username, $password) {
         $this->db->select('user_id, username, password, loginlevel');
         $this->db->from($this->tbl_name);
-        $this->db->where('username = ' . "'" . $username . "'");
-        $this->db->where('password = ' . "'" . $password . "'");
+        $this->db->where('username',$username);
+        $this->db->where('password',$password);
         $this->db->limit(1);
         $query = $this->db->get();
         if($query->num_rows() == 1)
@@ -21,6 +21,19 @@ Class userModel extends CI_Model
         else
             return false;
     }
+	
+    function get_by_email_username($email,$username){  	
+        $this->db->select('user_id, username, password, loginlevel');
+        $this->db->from($this->tbl_name);
+        $this->db->where('username',$username);
+        $this->db->where('email',$email);
+        $this->db->limit(1);
+        $query = $this->db->get();
+        if($query->num_rows() == 1)
+            return $query->result();
+        else
+            return false;
+    }	
 
     function autologin($checkstring) {
         $this->db->select('user_id, username, password, loginlevel');
@@ -58,11 +71,6 @@ Class userModel extends CI_Model
         return $this->db->get($this->tbl_name);
     }
 
-    function get_by_email_username($email,$username){
-        $this->db->where('username',$username);
-        $this->db->where('email',$email);
-        return $this -> db -> get($this->tbl_name);
-    }
 
     function save($user){
         $this->db->insert($this->tbl_name, $user);

@@ -3,6 +3,7 @@
 class PasswordRequest extends CI_Controller {
     private $email = '';
     private $username = '';
+	private $password = '';
 
     function __construct() {
         parent::__construct();
@@ -16,54 +17,51 @@ class PasswordRequest extends CI_Controller {
 		$footer = new appFooter;
 
         $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+		
+		$this->form_validation->set_rules('username', 'Benutzername', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|callback_check_database');
 
-		$data = array();
-        $data['navigation'] = $menu->show_menu();
-        $data['mainContent'] = $this->load->view('passwordrequest/passwordrequest', $data, true);
-        $data['homeTitle'] = $this->config->item('app_title').' - Passwort anfordern';
-		$data['headerTitle']  =  $this->config->item('app_title');
-		$data['footer'] = $footer->show_footer();
-        $this->load->view('main_template', $data);
+        if($this->form_validation->run() == FALSE) {
+			$data = array();
+	        $data['navigation'] = $menu->show_menu();
+	        $data['mainContent'] = $this->load->view('passwordrequest/passwordrequest', $data, true);
+	        $data['homeTitle'] = $this->config->item('app_title').' - Passwort anfordern';
+			$data['headerTitle']  =  $this->config->item('app_title');
+			$data['footer'] = $footer->show_footer();
+	        $this->load->view('main_template', $data);
+        } else {
+            redirect('passwordrequest/sucess', 'refresh');			
+        }
     }
 
-    function checkRequest() {
-        // Formular checken
-        $error_msg = '';
+    function check_database() {
+        // Formular check
         $this->email = $this->input->post('email');
         $this->username = $this->input->post('username');
         $result = $this->userModel->get_by_email_username($this->email,$this->username);
-        if ( $result->num_rows < 1 ) {
-		     $error_msg .= '<div class="alert alert-danger">Diese Emailadresse mit diesem Benutzername ist nicht bekannt.</div>';
-	    }
-
-        if( $error_msg != '' ) {
-            $this->load->library('appMenu');
-            $menu = new appMenu;
-            $this->load->library('appFooter');
-            $footer = new appFooter;
-
-            $this->load->helper(array('form', 'url'));
-
-            $data = array();
-            $data['error_msg'] = $error_msg;
-            $data['navigation'] = $menu->show_menu();
-            $data['mainContent'] = $this->load->view('passwordrequest/passwordrequest', $data, true);
-            $data['homeTitle'] = $this->config->item('app_title').' - Passwort anfordern';
-            $data['headerTitle']  =  $this->config->item('app_title');
-            $data['footer'] = $footer->show_footer();
-            $this->load->view('main_template', $data);
-        } else {
-            //Go to sending
-            $_SESSION['passwordrequest']['username'] = $this->username;
+        if($result) {
+		    $_SESSION['passwordrequest']['username'] = $this->username;
             $_SESSION['passwordrequest']['email'] = $this->email;
-            redirect('passwordrequest/sucess', 'refresh');
-        }
+			foreach($result as $row) {
+				$_SESSION['passwordrequest']['password'] = $row->password;	
+			}	
+			return TRUE;
+		} else {
+        	$this->form_validation->set_message('check_database', 'Diese Emailadresse mit diesem Benutzername ist nicht bekannt.');
+	    	return FALSE;			
+		}
     }
 
 
     function sucess() {
         $this->email = $_SESSION['passwordrequest']['email'];
         $this->username = $_SESSION['passwordrequest']['username'];
+		$this->password = $_SESSION['passwordrequest']['password'];
+		
+		echo 'un: '.$this->username.' pw:'.$this->password;
+		
         unset($_SESSION['passwordrequest']);
         $this->send_password();
 
@@ -82,12 +80,8 @@ class PasswordRequest extends CI_Controller {
     }
 
     function send_password() {
-
-		$result = $this->userModel->get_by_username($this->username);
-        foreach($result as $row)
-            $password = $row->password;
-
-		$login_url = base_url().'index.php/autologin/?checkstring='.md5($this->username.$password);
+    	
+		$login_url = base_url().'index.php/autologin/?checkstring='.md5($this->username.$this->password);
 
 	  // E-Mail versenden
 		$mailtext  = '';
@@ -96,7 +90,7 @@ class PasswordRequest extends CI_Controller {
 		$mailtext  .= '---------------------------------------------------'."\n";
 		$mailtext  .= 'Adresse: '.base_url()."\n";
 		$mailtext  .= 'Benutzername: '.$this->username."\n";
-		$mailtext  .= 'Passwort: '.$password."\n\n";
+		$mailtext  .= 'Passwort: '.$this->password."\n\n";
 		$mailtext  .= 'Direktlogin: '.$login_url."\n\n";
 
 		//echo nl2br($mailtext);

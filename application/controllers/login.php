@@ -10,6 +10,8 @@ class Login extends CI_Controller {
         $this->load->helper(array('form', 'url'));
 
         $this->load->library('form_validation');
+		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+		
         $this->form_validation->set_rules('username', 'Benutzername', 'trim|required|xss_clean');
         $this->form_validation->set_rules('password', 'Passwort', 'trim|required|xss_clean|callback_check_database');
 
@@ -59,7 +61,7 @@ class Login extends CI_Controller {
             $_SESSION['user'] =  $sess_array;
             return TRUE;
         } else {
-            $this->form_validation->set_message('check_database', '<div class="alert alert-danger">Falscher Benutzername oder falsches Passwort.</div>');
+            $this->form_validation->set_message('check_database', 'Falscher Benutzername oder falsches Passwort.');
             return FALSE;
         }
     }
