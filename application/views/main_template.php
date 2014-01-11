@@ -17,6 +17,7 @@
 
     <link href="<?=base_url()?>css/bootstrap.css" rel="stylesheet">
     <link href="<?=base_url()?>css/style.css" media="all" rel="stylesheet"/>
+    <link href="<?=base_url()?>css/theme.bootstrap.css" media="all" rel="stylesheet"/>
 
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -61,6 +62,8 @@
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="<?=base_url()?>js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="<?=base_url()?>js/jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="<?=base_url()?>js/jquery.tablesorter.widgets.min.js"></script>
     <script type="text/javascript" src="<?=base_url()?>js/functions.js"></script>
   </body>
 </html>

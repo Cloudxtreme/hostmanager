@@ -16,7 +16,7 @@ class Contact extends CI_Controller {
     $data['navigation'] = $menu->show_menu();
     $data['mainContent'] = $this->load->view('contact', $data, true);
     $data['homeTitle'] = $this->config->item('app_title').' - Kontakt';
-	$data['headerTitle']  =  $this->config->item('app_title');
+	$data['headerTitle']  =  $this->config->item('app_logo').$this->config->item('app_title');
 	$data['footer'] = $footer->show_footer();
     $this->load->view('main_template', $data);
 	}

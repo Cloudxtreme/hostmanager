@@ -141,7 +141,11 @@ echo '--------------------------------------------------------------------------
 
 // Benutzer
 $query  = "INSERT INTO `user` (`username`, `email`,`password`, `loginlevel`,`created`,`changed`,`enabled`) VALUES ";
-$query .= "('info@pan-x.ch','info@pan-x.ch', 'beetester45', 3, CURRENT_TIMESTAMP, NULL, 1)";
+$query .= "('info@pan-x.ch','info@pan-x.ch', 'beetester45', 3, CURRENT_TIMESTAMP, NULL, 1),";
+$query .= "('ww@tt.tt','tt@tt.tt', 'beetester45', 1, CURRENT_TIMESTAMP, NULL, 1),";
+$query .= "('rr@tt.tt','rr@tt.tt', 'beetester45', 1, CURRENT_TIMESTAMP, NULL, 1),";
+$query .= "('zz@tt.tt','zz@tt.tt', 'beetester45', 1, CURRENT_TIMESTAMP, NULL, 1),";
+$query .= "('uu@tt.tt','uu@tt.tt', 'beetester45', 1, CURRENT_TIMESTAMP, NULL, 1)";
 handle_table($query,'user','insert');
 
 

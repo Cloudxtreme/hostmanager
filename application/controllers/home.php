@@ -17,7 +17,7 @@ class Home extends CI_Controller {
         $data = array();
         $data['navigation'] = $menu->show_menu();
         $data['homeTitle'] = $this->config->item('app_title').' - Home';
-		$data['headerTitle']  =  $this->config->item('app_title');
+		$data['headerTitle']  =  $this->config->item('app_logo').$this->config->item('app_title');;
         $data['footer'] = $footer->show_footer();
 
         $data['mainContent'] = $this->load->view('home', $data, true);

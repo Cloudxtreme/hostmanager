@@ -10,21 +10,16 @@ class User extends CI_Controller {
     private $limit = 1000;
 	  private $typ_select = array(0 => 'Internetuser', 1 => 'Redakteur', 2 => 'Admin');
 
-    function User(){
-
-		parent::__construct();
-
+   function __construct() {
+        parent::__construct();
 		// Security
 		if ( $_SESSION['user']['loginlevel'] < 3 ) {
 		    redirect('home', 'refresh');
 		}
-
 		// Load Libraries
 		$this->load->library(array('table','form_validation'));
-
         // load model
         $this->load->model('userModel','',TRUE);
-
     }
 
     function index($offset = 0){
@@ -46,9 +41,17 @@ class User extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
 
+/*
+		$tmpl = array (
+		    'table_open'          => '<table class="tablesorter">',
+		    'heading_row_start'   => '<thead><tr>',
+		    'heading_row_end'     => '</tr></thead><tbody>',
+		    'table_close'         => '</body></table>'
+	    );
+
         // generate table data
 		$tmpl = array (
-                    'table_open'          => '<table id="sortTable" class="tablesorter">',
+                    'table_open'          => '<table class="zebra-striped" id="tablesorter">',
                     'heading_row_start'   => '<tr>',
                     'heading_row_end'     => '</tr>',
                     'heading_cell_start'  => '<th>',
@@ -59,24 +62,42 @@ class User extends CI_Controller {
                     'cell_end'            => '</td>',
                     'table_close'         => '</table>'
         );
+	  
+	 */
         $this->load->library('table');
-		$this->table->set_template($tmpl);
+		$tmpl = array ( 'table_open'  => '<table id="usertable" class="tablesorter zebra-striped">' );
+		$this->table->set_template($tmpl); 
         $this->table->set_empty("&nbsp;");
-        $this->table->set_heading('Benutzername','E-Mail','Typ','edit','login','l&ouml;schen');
+        $this->table->set_heading('Benutzername','E-Mail','Typ','','','');
         $i = 0 + $offset;
 
         foreach ($users as $user){
-            $user->typ = $this->typ_select[$user->loginlevel];
             $this->table->add_row(
             $user->username,
-            $user->email,$user->typ,
-            	anchor('user/update/'.$user->id,'bearbeiten',array()),
-				anchor('autologin/?checkstring='.md5($user->username.$user->password),'login',array()),
-				anchor('user/delete/'.$user->id,'l&ouml;schen',array('onclick'=>"return confirm('M&ouml;chten Sie diesen Benutzer wirklich l&ouml;schen?')")));
+            $user->email,
+            $user->loginlevel,
+            anchor('user/update/'.$user->user_id,'<span class="glyphicon glyphicon-edit"></span>',array('data-toggle'=>"tooltip", 'title'=>"edit")),
+			anchor('autologin/?checkstring='.md5($user->username.$user->password),'<span class="glyphicon glyphicon-export"></span>',array('data-toggle'=>"tooltip", 'title'=>"login")),
+			anchor('user/delete/'.$user->user_id,'<span class="glyphicon glyphicon-trash"></span>',array('onclick'=>"return confirm('M&ouml;chten Sie diesen Benutzer wirklich l&ouml;schen?')",'data-toggle'=>"tooltip",'title'=>"l&ouml;schen")));
         }
 		//echo 'checkstring='.md5('info@pan');
-
-        $data['table'] = $this->table->generate();
+/*
+		$data['table'] = '<div class="pager">
+		Page: <select class="gotoPage"></select>
+		<img src="../addons/pager/icons/first.png" class="first" alt="First" title="First page" />
+		<img src="../addons/pager/icons/prev.png" class="prev" alt="Prev" title="Previous page" />
+		<span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+		<img src="../addons/pager/icons/next.png" class="next" alt="Next" title="Next page" />
+		<img src="../addons/pager/icons/last.png" class="last" alt="Last" title= "Last page" />
+		<select class="pagesize">
+			<option selected="selected" value="10">10</option>
+			<option value="20">20</option>
+			<option value="30">30</option>
+			<option value="40">40</option>
+		</select>
+	  </div>';
+*/		
+        $data['table'].= $this->table->generate();
 
         // load view
         $this->load->library('appMenu');
@@ -87,7 +108,7 @@ class User extends CI_Controller {
         $data['navigation'] = $menu->show_menu();
         $data['mainContent'] = $this->load->view('user/userlist', $data, true);
         $data['homeTitle'] = $this->config->item('app_title').' - Benutzer';
-		$data['headerTitle']  =  $this->config->item('app_title');
+		$data['headerTitle']  =  $this->config->item('app_logo').$this->config->item('app_title');;
 		$data['footer'] = $footer->show_footer();
         $this->load->view('main_template', $data);
 
