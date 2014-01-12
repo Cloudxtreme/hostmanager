@@ -41,7 +41,7 @@ class User extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
 
-/*
+
 		$tmpl = array (
 		    'table_open'          => '<table class="tablesorter">',
 		    'heading_row_start'   => '<thead><tr>',
@@ -49,21 +49,6 @@ class User extends CI_Controller {
 		    'table_close'         => '</body></table>'
 	    );
 
-        // generate table data
-		$tmpl = array (
-                    'table_open'          => '<table class="zebra-striped" id="tablesorter">',
-                    'heading_row_start'   => '<tr>',
-                    'heading_row_end'     => '</tr>',
-                    'heading_cell_start'  => '<th>',
-                    'heading_cell_end'    => '</th>',
-                    'row_start'           => '<tr>',
-                    'row_end'             => '</tr>',
-                    'cell_start'          => '<td>',
-                    'cell_end'            => '</td>',
-                    'table_close'         => '</table>'
-        );
-	  
-	 */
         $this->load->library('table');
 		$tmpl = array ( 'table_open'  => '<table id="usertable" class="tablesorter zebra-striped">' );
 		$this->table->set_template($tmpl); 
@@ -76,11 +61,10 @@ class User extends CI_Controller {
             $user->username,
             $user->email,
             $user->loginlevel,
-            anchor('user/update/'.$user->user_id,'<span class="glyphicon glyphicon-edit"></span>',array('data-toggle'=>"tooltip", 'title'=>"edit")),
+            anchor('user/update/'.$user->user_id,'<span class="glyphicon glyphicon-edit"></span>',array('data-toggle'=>"modal", 'title'=>"edit", 'data-target'=>"#myModal")),
 			anchor('autologin/?checkstring='.md5($user->username.$user->password),'<span class="glyphicon glyphicon-export"></span>',array('data-toggle'=>"tooltip", 'title'=>"login")),
 			anchor('user/delete/'.$user->user_id,'<span class="glyphicon glyphicon-trash"></span>',array('onclick'=>"return confirm('M&ouml;chten Sie diesen Benutzer wirklich l&ouml;schen?')",'data-toggle'=>"tooltip",'title'=>"l&ouml;schen")));
         }
-		//echo 'checkstring='.md5('info@pan');
 /*
 		$data['table'] = '<div class="pager">
 		Page: <select class="gotoPage"></select>
@@ -106,9 +90,9 @@ class User extends CI_Controller {
 		$footer = new appFooter;
 
         $data['navigation'] = $menu->show_menu();
-        $data['mainContent'] = $this->load->view('user/userlist', $data, true);
-        $data['homeTitle'] = $this->config->item('app_title').' - Benutzer';
-		$data['headerTitle']  =  $this->config->item('app_logo').$this->config->item('app_title');;
+        $data['main_content'] = $this->load->view('user/userlist', $data, true);
+        $data['home_title'] = $this->config->item('app_title').' - Benutzer';
+		$data['header_title']  =  $this->config->item('app_logo').$this->config->item('app_title');
 		$data['footer'] = $footer->show_footer();
         $this->load->view('main_template', $data);
 
@@ -129,13 +113,13 @@ class User extends CI_Controller {
 			$data['password2'] = '';
 			$data['typ'] = form_dropdown('loginlevel', $this->typ_select2, '1',' class="selectField"');
 			$data['title'] = 'Benutzer anlegen';
-			$data['homeTitle'] = $this->config->item('app_title').' - Benutzer anlegen';
-            $data['headerTitle'] = $this->config->item('app_title');
+			$data['home_title'] = $this->config->item('app_title').' - Benutzer anlegen';
+            $data['header_title']  =  $this->config->item('app_logo').$this->config->item('app_title');
 			$data['action'] = site_url('user/add_user');
 			$data['link_back'] = anchor('user/index/','zur&uuml;ck zur &Uuml;bersicht',array('class'=>'back'));
 			$data['navigation'] = $menu->show_menu();
 			$data['footer'] = $footer->show_footer();
-			$data['mainContent'] = $this->load->view('user/useredit', $data, true);
+			$data['main_content'] = $this->load->view('user/useredit', $data, true);
 
 			// Show view
 			$this->load->view('main_template', $data);
@@ -174,13 +158,13 @@ class User extends CI_Controller {
 		$data['password2'] = $this->input->post('password2');
         $data['typ'] = form_dropdown('loginlevel', $this->typ_select, $this->input->post('loginlevel'),' class="selectField"');
         $data['title'] = 'Benutzerdaten anpassen';
-        $data['homeTitle'] = $this->config->item('app_title').' - Benutzerdaten anpassen';
-        $data['headerTitle'] = $this->config->item('app_title');
+        $data['home_title'] = $this->config->item('app_title').' - Benutzerdaten anpassen';
+        $data['header_title']  =  $this->config->item('app_logo').$this->config->item('app_title');
         $data['action'] = site_url('user/update_user');
         $data['link_back'] = anchor('user/index/','zur&uuml;ck zur &Uuml;bersicht',array('class'=>'back'));
         $data['navigation'] = $menu->show_menu();
 		$data['footer'] = $footer->show_footer();
-        $data['mainContent'] = $this->load->view('user/useredit', $data, true);
+        $data['main_content'] = $this->load->view('user/useredit', $data, true);
 
 		// Show view
         $this->load->view('main_template', $data);
@@ -189,83 +173,38 @@ class User extends CI_Controller {
 
     function update($id){
 
-        // Load Userdate
-        $user = $this->userModel->get_by_id($id)->row();
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
-		// Load Libraries
-        $this->load->library('appMenu');
-        $menu = new appMenu;
-        $this->load->library('appFooter');
- 		$footer = new appFooter;
+		$this->form_validation->set_rules('username', 'Benutzername', 'trim|required');
+		$this->form_validation->set_rules('password', 'Passwort',  'trim|required|matches[password2]');
+		$this->form_validation->set_rules('password2', 'Passwort Wiederholung', 'trim|required');
 
-        // set common properties
-        $data['id'] = $id;
-        $data['username']= $user->username;
-		$data['password'] = $user->password;
-		$data['password2'] = $user->password;
-        $data['typ'] = form_dropdown('loginlevel', $this->typ_select2, $user->loginlevel,' class="selectField"');
-        $data['title'] = 'Benutzerdaten anpassen';
-        $data['homeTitle'] = $this->config->item('app_title').' - Benutzerdaten anpassen';
-        $data['headerTitle'] = $this->config->item('app_title');
-        $data['action'] = site_url('user/update_user');
-        $data['link_back'] = anchor('user/index/','zur&uuml;ck zur &Uuml;bersicht',array('class'=>'back'));
-        $data['navigation'] = $menu->show_menu();
-        $data['mainContent'] = $this->load->view('user/useredit', $data, true);
-		$data['footer'] = $footer->show_footer();
-		// Show view
-        $this->load->view('main_template', $data);
 
-    }
-
-    function update_user(){
-
-        // set validation properties
-        $this->_set_rules();
-
-        // run validation
-        if ($this->form_validation->run() == FALSE){
-            $data['message'] = '';
+        if($this->form_validation->run() == FALSE) {
+	        // set common properties
+	        $data['id'] = $id;
+	        $data['username']= $user->username;
+			$data['password'] = $user->password;
+			$data['password2'] = $user->password;
+	        $data['typ'] = $user->loginlevel;//form_dropdown('loginlevel', $this->typ_select2, $user->loginlevel,' class="selectField"');
+	        $data['title'] = 'Benutzerdaten editieren';
+	        $data['action'] = site_url('user/update/'.$id);
+	        $data['main_content'] = $this->load->view('user/useredit', $data, true);
+			// Show view
+	        $this->load->view('user_template', $data);
         } else {
-            // save data
-            $id = $this->input->post('id');
-            $user = array('username' => $this->input->post('username'),
-                          'password' => $this->input->post('password'),
-						  'loginlevel' => $this->input->post('loginlevel'));
-            $this->userModel->update($id,$user);
-            redirect('user', 'refresh');
+        	$data['id'] = $this->input->post('id');
+        	$data['username']= $this->input->post('username');
+			$data['password'] = $this->input->post('password');
+			$data['password2'] = $this->input->post('password2');
+			$this->userModel->update($id,$user);
+            redirect('user/index', 'refresh');			
         }
-
-		// Load Libraries
-        $this->load->library('appMenu');
-        $menu = new appMenu;
-        $this->load->library('appFooter');
-        $footer = new appFooter;
-
-
-        // set common properties
-        $data['id'] = $this->input->post('id');
-        $data['username']= $this->input->post('username');
-		$data['password'] = $this->input->post('password');
-		$data['password2'] = $this->input->post('password2');
-        $data['typ'] = form_dropdown('loginlevel', $this->typ_select, $this->input->post('loginlevel'),' class="selectField"');
-        $data['title'] = 'Benutzerdaten anpassen';
-        $data['homeTitle'] = $this->config->item('app_title').' - Benutzerdaten anpassen';
-        $data['headerTitle'] = $this->config->item('app_title');
-        $data['action'] = site_url('user/update_user');
-        $data['link_back'] = anchor('user/index/','zur&uuml;ck zur &Uuml;bersicht',array('class'=>'back'));
-        $data['navigation'] = $menu->show_menu();
-		$data['footer'] = $footer->show_footer();
-        $data['mainContent'] = $this->load->view('user/useredit', $data, true);
-
-		// Show view
-        $this->load->view('main_template', $data);
     }
 
     function delete($id){
-
-		// delete request, rating, assignment adult, child
-		$request = $this->requestModel->checkRequestByUser($id)->row(0);
-		$this->requestModel->delete($request->requestid);
 
 		// delete user
         $this->userModel->delete($id);
@@ -273,15 +212,5 @@ class User extends CI_Controller {
         // redirect to person list page
         redirect('user/index/','refresh');
     }
-
-    // validation rules
-    function _set_rules(){
-
-		$this->form_validation->set_rules('username', 'Benutzername', 'trim|required');
-		$this->form_validation->set_rules('password', 'Passwort',  'trim|required|matches[password2]');
-		$this->form_validation->set_rules('password2', 'Passwort Wiederholung', 'trim|required');
-
-    }
-
 }
 ?>

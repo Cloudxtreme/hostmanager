@@ -16,11 +16,11 @@ class Home extends CI_Controller {
         $footer = new appFooter;
         $data = array();
         $data['navigation'] = $menu->show_menu();
-        $data['homeTitle'] = $this->config->item('app_title').' - Home';
-		$data['headerTitle']  =  $this->config->item('app_logo').$this->config->item('app_title');;
+        $data['home_title'] = $this->config->item('app_title').' - Home';
+		$data['header_title']  =  $this->config->item('app_logo').$this->config->item('app_title');;
         $data['footer'] = $footer->show_footer();
 
-        $data['mainContent'] = $this->load->view('home', $data, true);
+        $data['main_content'] = $this->load->view('home', $data, true);
 
         $this->load->view('main_template', $data);
     }

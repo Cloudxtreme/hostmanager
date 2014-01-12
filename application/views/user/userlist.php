@@ -3,6 +3,5 @@
 </div>
 <?php echo anchor('user/add/','<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Neuer Benutzer anlegen</button>',array('class'=>'add')); ?><br />
 <br />
-<div class="paging"><?php echo $pagination; ?></div>
-<div class="data"><?php echo $table; ?></div>
-<br />
+<?php echo $table; ?>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>

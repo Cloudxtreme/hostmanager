@@ -1,9 +1,17 @@
 
 
 $(document).ready(function() {
+  // modal
+  //$('#myModal').modal({show: false});
+
+$('#myModal').on('hidden.bs.modal', function () {
+  $(this).removeData('bs.modal');
+});
+
+  // tooltip
   $('[data-toggle="tooltip"]').tooltip({'placement': 'top'});
 	
-	
+  // tablesorter
   $.extend($.tablesorter.themes.bootstrap, {
     // these classes are added to the table. To see other table classes available,
     // look here: http://twitter.github.com/bootstrap/base-css.html#tables
@@ -49,22 +57,5 @@ $(document).ready(function() {
       // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
       zebra : ["even", "odd"]
     }
-  })
-  .tablesorterPager({
-
-    // target the pager markup - see the HTML block below
-    container: $(".ts-pager"),
-
-    // target the pager page select dropdown - choose a page
-    cssGoto  : ".pagenum",
-
-    // remove rows from the table to speed up the sort of large tables.
-    // setting this to false, only hides the non-visible rows; needed if you plan to add/remove rows with the pager enabled.
-    removeRows: false,
-
-    // output string - default is '{page}/{totalPages}';
-    // possible variables: {page}, {totalPages}, {filteredPages}, {startRow}, {endRow}, {filteredRows} and {totalRows}
-    output: '{startRow} - {endRow} / {filteredRows} ({totalRows})'
-
   });
 }); 

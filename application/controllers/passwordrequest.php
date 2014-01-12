@@ -26,9 +26,9 @@ class PasswordRequest extends CI_Controller {
         if($this->form_validation->run() == FALSE) {
 			$data = array();
 	        $data['navigation'] = $menu->show_menu();
-	        $data['mainContent'] = $this->load->view('passwordrequest/passwordrequest', $data, true);
-	        $data['homeTitle'] = $this->config->item('app_title').' - Passwort anfordern';
-			$data['headerTitle']  =  $this->config->item('app_logo').$this->config->item('app_title');;
+	        $data['main_content'] = $this->load->view('passwordrequest/passwordrequest', $data, true);
+	        $data['home_title'] = $this->config->item('app_title').' - Passwort anfordern';
+			$data['header_title']  =  $this->config->item('app_logo').$this->config->item('app_title');;
 			$data['footer'] = $footer->show_footer();
 	        $this->load->view('main_template', $data);
         } else {
@@ -72,9 +72,9 @@ class PasswordRequest extends CI_Controller {
 
     	$data = array();
         $data['navigation'] = $menu->show_menu();
-        $data['mainContent'] = $this->load->view('passwordrequest/sendsuccess', $data, true);
-        $data['homeTitle'] = $this->config->item('app_title').' - Passwort anfordern';
-    	$data['headerTitle']  =  $this->config->item('app_logo').$this->config->item('app_title');;
+        $data['main_content'] = $this->load->view('passwordrequest/sendsuccess', $data, true);
+        $data['home_title'] = $this->config->item('app_title').' - Passwort anfordern';
+    	$data['header_title']  =  $this->config->item('app_logo').$this->config->item('app_title');;
     	$data['footer'] = $footer->show_footer();
         $this->load->view('main_template', $data);
     }

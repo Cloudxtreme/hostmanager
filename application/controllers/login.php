@@ -12,6 +12,7 @@ class Login extends CI_Controller {
         $this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 		
+		// localisation
         $this->form_validation->set_rules('username', 'Benutzername', 'trim|required|xss_clean');
         $this->form_validation->set_rules('password', 'Passwort', 'trim|required|xss_clean|callback_check_database');
 
@@ -27,9 +28,16 @@ class Login extends CI_Controller {
 
             $data = array();
             $data['navigation'] = $menu->show_menu();
-            $data['mainContent'] = $this->load->view('login', $data, true);
-            $data['homeTitle'] = $this->config->item('app_title').' - Login';
-            $data['headerTitle']  =  $this->config->item('app_logo').$this->config->item('app_title');
+            $data['main_content'] = $this->load->view('login', $data, true);
+			$data['action'] = 'login';
+			// localization
+			$data['content_title'] = 'Login';
+            $data['home_title'] = $this->config->item('app_title').' - '.$data['contentTitle'];
+            $data['header_title'] = $this->config->item('app_logo').$this->config->item('app_title');
+			
+			$data['link_password_forgot'] = anchor('passwordrequest','Passwort vergessen?');
+			
+            
             $data['footer'] = $footer->show_footer();
             $this->load->view('main_template', $data);
 
