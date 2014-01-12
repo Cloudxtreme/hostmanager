@@ -28,7 +28,6 @@ class Login extends CI_Controller {
 
             $data = array();
             $data['navigation'] = $menu->show_menu();
-            $data['main_content'] = $this->load->view('login', $data, true);
 			$data['action'] = 'login';
 			// localization
 			$data['content_title'] = 'Login';
@@ -39,6 +38,7 @@ class Login extends CI_Controller {
 			
             
             $data['footer'] = $footer->show_footer();
+			$data['main_content'] = $this->load->view('login', $data, true);
             $this->load->view('main_template', $data);
 
         } else {
