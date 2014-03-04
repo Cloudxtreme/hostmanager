@@ -4,10 +4,11 @@ Hosting Billing System
 
 ## installation
 - db: _install/install.php
-- config: config.php, database.php
+- config.php, database.php
 
 ## todo
-- localization: default $config['language'] = 'german';
+- localization: default $config['language'] = 'german'
+- ...
 
 ## version
 - CI 2.1.4
